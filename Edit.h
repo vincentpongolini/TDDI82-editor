@@ -22,9 +22,13 @@ public:
     std::vector<std::string> get_arguments(int argc, char* argv[]);
     std::vector<std::string> convert_text(std::ifstream& file);
     filtered_arguments filter_arguments(std::vector<std::string> arguments);
+
+    void print(std::vector<std::string> text);
+    void frequency(std::vector<std::string> text);
+    void table(std::vector<std::string> text);
     
 private:
-    
+    std::string get_largest_word(std::vector<std::string> text);
 };
 
 #endif

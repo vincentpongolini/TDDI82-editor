@@ -45,11 +45,10 @@ int main(int argc, char* argv[])
     
     file.close();
                                                                           
-    
-    for(auto i : text)
-    {
-        std::cout << i << std::endl;
-    }
+    obj.print(text);
+    obj.frequency(text);
+    std::cout << "-----------------------------------------------------------------" << std::endl;
+    obj.table(text);
     
     return 0;
 }

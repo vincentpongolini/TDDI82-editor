@@ -4,8 +4,23 @@
 #include <fstream>
 #include <algorithm>
 #include <iterator>
+#include <iostream>
+#include <map>
+#include <iomanip>
 
 using namespace std;
+
+string Edit::get_largest_word(vector<string> text)
+{
+
+    auto it = max_element(text.begin(), text.end(),
+                          [](const auto& a, const auto& b)
+                          {
+                              return a.size() < b.size();
+                          });
+    return *it;
+}
+
 
 void Edit::open_file(string file_name, ifstream& file)
 {
@@ -61,3 +76,61 @@ filtered_arguments Edit::filter_arguments(vector<string> arguments)
     
     return new_args;
 }
+
+void Edit::print(vector<string> text)
+{
+
+    for_each(text.begin(), text.end(), [](string s)
+                                       {
+                                           cout << s << " "; 
+                                       });
+    cout << endl;
+    
+}
+
+void Edit::frequency(vector<string> text)
+{
+
+    string word = get_largest_word(text);
+    
+    auto print= [&word] (pair<string,unsigned int> item)
+                {
+                    cout << setw(word.size()) << item.first << " " << item.second << endl;    
+                };
+    auto compare = [](pair<string,unsigned int> const& lhs, pair<string,unsigned int> const& rhs)
+                   {
+                       return lhs.second > rhs.second;
+                   };
+    map<string,unsigned int> map_words;
+    
+    for_each(text.begin(),text.end(),[&map_words](string s){map_words[s]++;});
+    vector<pair<string, unsigned int>> setofwords {map_words.begin(),map_words.end()};
+
+    sort(setofwords.begin(), setofwords.end(), compare);
+
+    for_each(setofwords.begin(), setofwords.end(), print);
+               
+}
+
+void Edit::table(vector<string> text)
+{
+
+    vector<string> tmp{text};
+    sort(tmp.begin(), tmp.end());
+
+    string word = get_largest_word(text);
+    
+    auto print= [&word] (pair<string,unsigned int> item)
+                {
+                    cout << left << setw(word.size()) << item.first << " " << item.second << endl;    
+                };
+    
+    map<string,unsigned int> map_words;
+    
+    for_each(text.begin(),text.end(),[&map_words](string s){map_words[s]++;});
+    vector<pair<string, unsigned int>> setofwords {map_words.begin(),map_words.end()};
+
+    for_each(setofwords.begin(), setofwords.end(), print);
+}
+
+
