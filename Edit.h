@@ -26,6 +26,10 @@ public:
     void print(std::vector<std::string> text);
     void frequency(std::vector<std::string> text);
     void table(std::vector<std::string> text);
+    std::vector<std::string> substitute(filtered_arguments filtered_args,
+                                        std::vector<std::string> text);
+    std::vector<std::string> remove(filtered_arguments filtered_args,
+                                    std::vector<std::string> text);
     
 private:
     std::string get_largest_word(std::vector<std::string> text);

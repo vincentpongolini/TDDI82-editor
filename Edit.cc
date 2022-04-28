@@ -64,12 +64,12 @@ filtered_arguments Edit::filter_arguments(vector<string> arguments)
                  int first = s.find("--");
                  int second = s.find("=");
 
-                 string flag_str = s.substr(first+2, second-first-2);
+                 string flag_str = s.substr(first, second-first);
                  new_args.flags.push_back(flag_str);
                  
-                 string parameter_str = s.substr(second+1, s.length() - flag_str.length() -2);
-
-                 if(!parameter_str.empty())
+                 string parameter_str = s.substr(second+1, s.length() - flag_str.length() -1);
+                 
+                 if(s != flag_str)
                      new_args.parameters.push_back(parameter_str);
                  
              });
@@ -133,4 +133,58 @@ void Edit::table(vector<string> text)
     for_each(setofwords.begin(), setofwords.end(), print);
 }
 
+vector<string> Edit::substitute(filtered_arguments filtered_args, vector<string> text)
+{
+
+    vector<string> param{filtered_args.parameters};
+
+    string old_word{};
+    string new_word{};
+
+    vector<string> new_text{text}; 
+    
+    for_each(param.begin(), param.end(),
+             [&old_word, &new_word](string s)
+             {
+
+                 int first = s.find(" ");
+                 int second = s.find("+");
+
+                 string temp_old = s.substr(first+1, second-first-1);
+                 old_word = temp_old;
+
+                 
+                 string temp_new = s.substr(second+1, first-second-1);
+                 if(old_word != temp_new)
+                     new_word = temp_new;
+             });
+    
+    replace(new_text.begin(), new_text.end(), old_word, new_word);
+    
+    return new_text;
+}
+
+vector<string> Edit::remove(filtered_arguments filtered_args, vector<string> text)
+{
+
+    vector<string> param{filtered_args.parameters};
+    string remove_word{};
+
+    vector<string> new_text{text};
+    
+    for_each(param.begin(), param.end(),
+             [&remove_word](string s)
+             {
+
+                 int first = s.find("=");
+                 int second = s.find(" ");
+
+                 string temp_word = s.substr(first+1, second-first-1);
+                 remove_word = temp_word;
+             });
+
+    new_text.erase(std::remove(new_text.begin(), new_text.end(), remove_word), new_text.end());
+
+    return new_text;
+}
 

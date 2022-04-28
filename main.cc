@@ -6,6 +6,12 @@
 #include <iterator>
 #include "Edit.h"
 
+void run_flags()
+{
+    
+}
+    
+
 int main(int argc, char* argv[])
 {
     
@@ -49,6 +55,13 @@ int main(int argc, char* argv[])
     obj.frequency(text);
     std::cout << "-----------------------------------------------------------------" << std::endl;
     obj.table(text);
+
+    // std::vector<std::string> new_text{obj.substitute(new_args, text)};
+    text = obj.substitute(new_args, text);
+    obj.print(text);
+    
+    text = obj.remove(new_args, text);
+    obj.print(text);
     
     return 0;
 }
