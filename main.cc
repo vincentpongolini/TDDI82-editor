@@ -8,45 +8,49 @@
 
 void run_flags(Edit obj, std::vector<std::string> text, filtered_arguments new_args)
 {
-    for ( auto c : new_args.flags )
-    {
-	if (c == "--print")
-	{
-	    std::cout << "Text:" << "\n";
-	    obj.print(text);
-	}
 
-	else if (c == "--table")
-	{
-	    std::cout << "Table:" << "\n";
-	    obj.table(text);
-        }
 
-	else if (c == "--frequency")
-	{
-	    std::cout << "Frequency:" << "\n";
-	    obj.frequency(text);
-	}
+    for_each(new_args.flags.begin(), new_args.flags.end(),
+             [&obj, &text, &new_args](std::string s)
+             {
+
+                 if (s == "--print")
+                 {
+                     std::cout << "Text:" << "\n";
+                     obj.print(text);
+                 }
+
+                 else if (s == "--table")
+                 {
+                     std::cout << "Table:" << "\n";
+                     obj.table(text);
+                 }
+
+                 else if (s == "--frequency")
+                 {
+                     std::cout << "Frequency:" << "\n";
+                     obj.frequency(text);
+                 }
 	
-	else if (c == "--substitute")
-	{
-	    std::cout << "Text with substituted words:" << "\n";
-	    text = obj.substitute(new_args, text);
-	    obj.print(text);
-	}
+                 else if (s == "--substitute")
+                 {
+                     std::cout << "Text with substituted words:" << "\n";
+                     text = obj.substitute(new_args, text);
+                     obj.print(text);
+                 }
 
-        else if (c == "--remove")
-	{
-	    std::cout << "Text with removed words:" << "\n";
-	    text = obj.remove(new_args, text);
-	    obj.print(text);
-	}
+                 else if (s == "--remove")
+                 {
+                     std::cout << "Text with removed words:" << "\n";
+                     text = obj.remove(new_args, text);
+                     obj.print(text);
+                 }
 
-	else
-	{
-	    throw std::invalid_argument("Invalid argument(s)");
-   	}
-    }
+                 else
+                 {
+                     throw std::invalid_argument("Invalid argument(s)");
+                 } 
+             });          
 }
 
 void check_args(int argc, Edit obj, std::vector<std::string> text, filtered_arguments new_args)
@@ -87,8 +91,16 @@ int main(int argc, char* argv[])
     arguments = obj.get_arguments(argc, argv);
     filtered_arguments new_args{obj.filter_arguments(arguments)};
 
-    check_args(argc, obj, text, new_args);
-   
+    for (auto a : arguments){
+        std::cout << a << std::endl;
+    }
+
+    for (auto a : new_args.parameters){
+        std::cout << a << std::endl;
+    }
+    
+    check_args(argc, obj, text, new_args); 
+    
     return 0;
 }
 

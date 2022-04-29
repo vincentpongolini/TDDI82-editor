@@ -33,6 +33,8 @@ public:
     
 private:
     std::string get_largest_word(std::vector<std::string> text);
+    std::string word_new{};
+    std::string word_old{};
 };
 
 #endif
